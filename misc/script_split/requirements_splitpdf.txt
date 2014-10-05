@@ -1,0 +1,4 @@
+PyPDF2==1.23
+argparse==1.2.1
+pgmagick==0.5.8
+wsgiref==0.1.2

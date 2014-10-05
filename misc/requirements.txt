@@ -1,0 +1,11 @@
+-e git+https://github.com/django-nonrel/django@nonrel-1.6#egg=Django1.6Nonrel
+-e git+https://github.com/django-nonrel/djangotoolbox#egg=djangotoolbox
+-e git+https://github.com/django-nonrel/mongodb-engine#egg=mongodb-engine
+argparse==1.2.1
+django-tastypie==0.12.0
+pymongo==2.7.2
+python-dateutil==2.2
+python-mimeparse==0.1.4
+six==1.8.0
+wsgiref==0.1.2
+django-cors-headers==0.13
