@@ -39,7 +39,7 @@ INSTALLED_APPS = (
     'tastypie',
     'djangotoolbox',
     'corsheaders',
-
+    'apps.filehandler',
 )
 
 MIDDLEWARE_CLASSES = (

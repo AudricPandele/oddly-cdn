@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/1.6/howto/deployment/wsgi/
 
 import os, sys
 
-sys.path.append('/home/oddly/domains/api.oddly.fr/public_html/')
+sys.path.append('/home/oddly/domains/cdn.oddly.fr/public_html/')
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "core.settings")
 
 from django.core.wsgi import get_wsgi_application
