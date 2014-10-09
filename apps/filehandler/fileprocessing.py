@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging; logger = logging.getLogger(__name__)
 
+from django.conf import settings
 import sys, os
 from pgmagick import Image
 
@@ -8,35 +9,35 @@ from PyPDF2 import PdfFileWriter, PdfFileReader
 
 def main(uploaded_file, mongo_id=None):
     pdfprocessor = PdfProcessor()
-    pdfprocessor.run()
+    pdfprocessor.run(uploaded_file)
 
 class PdfProcessor(object):
     
-    INPUTFILE = PdfFileReader(file("doc.pdf", "rb"))
 
-    def run(self):
-        pdf = self.INPUTFILE
-        documents_infos = self.retrieve_document_infos(pdf)
-        self.splitter(documents_infos)
-        self.jpeg_converter()
+    def run(self, uploaded_file):
+        inputfile = PdfFileReader(file(str(uploaded_file.path), "rb"))
+        nameinputfile = uploaded_file.name
+        self.splitter(inputfile, nameinputfile)
+        self.jpeg_converter(nameinputfile)
         
-    def splitter(self, documents_infos):
-         for i in xrange(self.INPUTFILE.numPages):
+    def splitter(self, inputfile, nameinputfile):
+         for i in xrange(inputfile.numPages):
              output = PdfFileWriter()
-             output.addPage(self.INPUTFILE.getPage(i))
-             outputStream = file("%s.pdf" % i, "wb") # A changer
+             output.addPage(inputfile.getPage(i))
+             outputStream = file("%s_%s.pdf" % (nameinputfile, i), "wb") # A changer
              output.write(outputStream)
              outputStream.close()
-  
-    def jpeg_converter(self):
+    
+    def jpeg_converter(self, nameinputfile):
         p_number = 0
         progressbar = ""
-
-        for i in os.listdir(os.getcwd()):
+        for i in os.listdir(settings.MEDIA_ROOT):
             p_number = p_number + 1
             if i.endswith(".pdf"):
-                img = Image(i)
-                img.write("page_%d.jpeg" % p_number)
+                imgpath = settings.MEDIA_ROOT + i
+                img = Image(imgpath)
+                imgname = "%s_%d.jpeg" % (os.path.splitext(i)[0], p_number)
+                img.write(settings.MEDIA_ROOT + imgname)
             else:
                 print("no files")
 

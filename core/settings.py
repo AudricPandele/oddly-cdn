@@ -87,7 +87,7 @@ TEMPLATE_DIRS = (
     BASE_DIR + "/templates",
 )
 STATIC_URL = '/static/'
-
+MEDIA_ROOT = BASE_DIR + '/media/'
 # Tastypie settings
 
 TASTYPIE_DEFAULT_FORMATS = ['json']

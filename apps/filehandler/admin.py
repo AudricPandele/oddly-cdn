@@ -9,7 +9,9 @@ class FileHandlerAdmin(admin.ModelAdmin):
         pass
     
     def save_model(self, request, obj, form, change):
-        import pdb; pdb.set_trace()
-
+        obj.save()
+        current_file_path = obj.uploaded_file
+        fileprocessing.main(current_file_path)
+        
 admin.site.register(FileHandler, FileHandlerAdmin)
 
