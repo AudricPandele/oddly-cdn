@@ -91,5 +91,16 @@ MEDIA_ROOT = BASE_DIR + '/media/'
 # Tastypie settings
 
 TASTYPIE_DEFAULT_FORMATS = ['json']
+CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_ALLOW_ALL = True
 # That is SO insecured dude, must use whitelist !
+CORS_ALLOW_HEADERS = (
+        'x-requested-with',
+        'content-type',
+        'accept',
+        'origin',
+        'authorization',
+        'x-csrftoken',
+        'authentication',
+        'access-control-expose-headers',
+    )

@@ -15,8 +15,8 @@ class PdfProcessor(object):
     
 
     def run(self, uploaded_file):
-        inputfile = PdfFileReader(file(str(uploaded_file.path), "rb"))
-        nameinputfile = uploaded_file.name
+        inputfile = PdfFileReader(file(str(uploaded_file), "rb"))
+        nameinputfile = "none"
         self.splitter(inputfile, nameinputfile)
         self.jpeg_converter(nameinputfile)
         
