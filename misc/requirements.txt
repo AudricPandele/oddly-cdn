@@ -9,5 +9,5 @@ python-mimeparse==0.1.4
 six==1.8.0
 wsgiref==0.1.2
 django-cors-headers==0.13
-pgmagick$
-pypdf2
+pgmagick===0.5.8
+PyPDF2===1.23
