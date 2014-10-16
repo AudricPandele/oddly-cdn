@@ -30,13 +30,13 @@ class OddlyFileHandling(ModelResource):
         resource_name = "fileupload"
 
     def obj_create(self, request):
-        mongoid = request.data.get('text')
+        mongoid = request.data.get('bookid')
         file = request.data.get('file')
         upload_path = "%s/%s" % (mongoid, request.data.get('file').name)
         path = default_storage.save(upload_path, ContentFile(file.read()))
         if path:
-            path_to_process = "%s%s" % (settings.MEDIA_ROOT, upload_path)
-            fileprocessing.main(path_to_process)
+            uploaded_file = "%s%s" % (settings.MEDIA_ROOT, upload_path)
+            fileprocessing.main(uploaded_file, mongoid)
     
     def deserialize(self, request, data, format=None):
         """
