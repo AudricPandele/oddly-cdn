@@ -10,7 +10,7 @@ class FileHandlerAdmin(admin.ModelAdmin):
     
     def save_model(self, request, obj, form, change):
         obj.save()
-        current_file_path = obj.uploaded_file
+        current_file_path =  request.request.FILES.get('file')
         fileprocessing.main(current_file_path)
         
 admin.site.register(FileHandler, FileHandlerAdmin)

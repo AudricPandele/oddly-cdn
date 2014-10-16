@@ -1,5 +1,6 @@
 import base64
-
+import urllib, urllib2
+import json
 # tastypie
 from tastypie.resources import ModelResource
 from tastypie import fields
@@ -32,6 +33,15 @@ class OddlyFileHandling(ModelResource):
     def obj_create(self, request):
         mongoid = request.data.get('bookid')
         file = request.data.get('file')
+        url = 'http://localhost:8000/api/v1/books_meta/'
+        values = {'book_id' : str(mongoid),
+                  'meta_key' : 'test',
+                  'meta_value' : 'test' }
+        data = json.dumps(values)
+        #datas = urllib.urlencode(data)       
+        req = urllib2.Request(url, data, {'Content-Type': 'application/json'})
+        req.add_header('REFERER', 'CDN')
+        response = urllib2.urlopen(req, data)
         upload_path = "%s/%s" % (mongoid, request.data.get('file').name)
         path = default_storage.save(upload_path, ContentFile(file.read()))
         if path:
