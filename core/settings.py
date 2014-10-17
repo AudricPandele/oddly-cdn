@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'djangotoolbox',
     'corsheaders',
     'apps.filehandler',
+    'apps.taskmanager',
 )
 
 MIDDLEWARE_CLASSES = (

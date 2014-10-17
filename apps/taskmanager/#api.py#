@@ -1,0 +1,13 @@
+import base64
+import json
+import requests
+# tastypie
+from tastypie.resources import ModelResource
+from tastypie import fields
+from tastypie.authorization import Authorization
+from tastypie.authentication import BasicAuthentication
+from tastypie.validation import Validation
+from tastypie.exceptions import BadRequest
+
+from django.conf import settings
+# Import models

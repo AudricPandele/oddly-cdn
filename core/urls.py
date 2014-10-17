@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, include, url
 
 from tastypie.api import Api
-from apps.filehandler.api import OddlyFileHandling 
+from apps.filehandler.api import OddlyFileHandling, TaskManagerEntry
 
 '''
 Tastypie ApiCdn
@@ -14,7 +14,7 @@ Register models :
 
 v1_api = Api(api_name = 'v1')
 v1_api.register(OddlyFileHandling())
-
+v1_api.register(TaskManagerEntry())
 
 from django.contrib import admin
 admin.autodiscover()

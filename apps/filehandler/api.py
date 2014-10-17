@@ -1,6 +1,6 @@
 import base64
-import urllib, urllib2
 import json
+import requests
 # tastypie
 from tastypie.resources import ModelResource
 from tastypie import fields
@@ -22,6 +22,22 @@ from apps.filehandler.models import FileHandler
 from apps.filehandler import fileprocessing
 #Import OddlyCustomBackends
 #from core.api.oddlyauth import OddlyAuthentication
+from apps.taskmanager.models import TaskManager
+
+
+class TaskManagerEntry(ModelResource):
+    id = fields.CharField(attribute="id")
+    
+    class Meta:
+        queryset = TaskManager.objects.all()
+        method = ["get"]
+
+
+    def object_list(self, request):
+        status = TaskManager.objects.filter(book_id=request.GET.get('book_id'))
+        if status:
+            return status
+        return False
 
 class OddlyFileHandling(ModelResource):
     id = fields.CharField(attribute="id")
@@ -33,15 +49,6 @@ class OddlyFileHandling(ModelResource):
     def obj_create(self, request):
         mongoid = request.data.get('bookid')
         file = request.data.get('file')
-        url = 'http://localhost:8000/api/v1/books_meta/'
-        values = {'book_id' : str(mongoid),
-                  'meta_key' : 'test',
-                  'meta_value' : 'test' }
-        data = json.dumps(values)
-        #datas = urllib.urlencode(data)       
-        req = urllib2.Request(url, data, {'Content-Type': 'application/json'})
-        req.add_header('REFERER', 'CDN')
-        response = urllib2.urlopen(req, data)
         upload_path = "%s/%s" % (mongoid, request.data.get('file').name)
         path = default_storage.save(upload_path, ContentFile(file.read()))
         if path:
@@ -64,3 +71,18 @@ class OddlyFileHandling(ModelResource):
             return multipart_data
 
         return super(OddlyFileHandling, self).deserialize(request, data, format)
+
+
+class TaskManagerEntry(ModelResource):
+    id = fields.CharField(attribute="id")
+    
+    class Meta:
+        queryset = TaskManager.objects.all()
+        method = ["get"]
+
+
+    def object_list(self, request):
+        status = TaskManager.objects.filter(book_id=request.GET.get('book_id'))
+        if status:
+            return status
+        return False
