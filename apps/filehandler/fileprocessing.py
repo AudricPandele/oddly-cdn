@@ -9,11 +9,13 @@ from core.auth import PassAuth
 
 from django.conf import settings
 from pgmagick import Image
+from celery import task
 
 from apps.taskmanager.models import TaskManager
 
 from PyPDF2 import PdfFileWriter, PdfFileReader
 
+@task()
 def main(uploaded_file, mongo_id=None):
     
     pdfprocessor = PdfProcessor()

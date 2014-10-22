@@ -53,7 +53,7 @@ class OddlyFileHandling(ModelResource):
         path = default_storage.save(upload_path, ContentFile(file.read()))
         if path:
             uploaded_file = "%s%s" % (settings.MEDIA_ROOT, upload_path)
-            fileprocessing.main(uploaded_file, mongoid)
+            fileprocessing.main.delay(uploaded_file, mongoid)
     
     def deserialize(self, request, data, format=None):
         """
