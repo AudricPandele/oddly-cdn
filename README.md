@@ -8,4 +8,5 @@
 sudo apt-get install libgraphicsmagick++1-dev
 sudo apt-get install libgraphicsmagick++3 
 sudo apt-get install libboost-python-dev
+sudo apt-get install g++
 ```
