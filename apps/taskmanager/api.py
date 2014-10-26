@@ -20,7 +20,7 @@ class TaskManagerEntry(ModelResource):
     class Meta:
         queryset = TaskManager.objects.all()
         method = ["get"]
-
+        resource_name="taskstatus"
 
     def object_list(self, request):
         status = TaskManager.objects.filter(book_id=request.GET.get('book_id'))
