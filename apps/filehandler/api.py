@@ -43,7 +43,7 @@ class OddlyFileHandling(ModelResource):
         resource_name = "fileupload"
 
     def obj_create(self, request):
-        mongoid = request.data.get('bookid')
+        mongoid = request.data.get('itemid')
         file = request.data.get('file')
         upload_path = "%s/%s" % (mongoid, request.data.get('file').name)
         path = default_storage.save(upload_path, ContentFile(file.read()))
