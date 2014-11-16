@@ -1,22 +1,16 @@
 -e git+https://github.com/django-nonrel/django@nonrel-1.6#egg=Django1.6Nonrel
 -e git+https://github.com/django-nonrel/djangotoolbox#egg=djangotoolbox
--e git+https://github.com/django-nonrel/mongodb-engine#egg=mongodb-enginePyPDF2==1.23
-amqp==1.4.6
-anyjson==0.3.3
+-e git+https://github.com/django-nonrel/mongodb-engine#egg=mongodb-engine
 argparse==1.2.1
-bcrypt==1.0.2
-billiard==3.3.0.18
-celery==3.1.16
-cffi==0.8.6
-django-cors-headers==0.13
-django-tastypie==0.12.0
-kombu==3.0.23
-pgmagick==0.5.8
-pycparser==2.10
+restless==2.0.1
 pymongo==2.7.2
 python-dateutil==2.2
 python-mimeparse==0.1.4
-pytz==2014.9
-requests==2.4.3
 six==1.8.0
 wsgiref==0.1.2
+django-cors-headers==0.13
+bcrypt==1.0.2
+celery==3.1.16
+PyPDF2==1.23
+pgmagick==0.5.8
+requests==2.4.3
