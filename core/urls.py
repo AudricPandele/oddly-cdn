@@ -3,6 +3,7 @@ from django.conf.urls import patterns, include, url
 from tastypie.api import Api
 from apps.filehandler.api import OddlyFileHandling, TaskManagerEntry
 
+from core.api.endpoints.item_handling import ItemHandlingResource
 '''
 Tastypie ApiCdn
 __version__ : v1
@@ -25,5 +26,6 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^api/', include(v1_api.urls))
-)
+    url(r'^api/', include(v1_api.urls)),
+    url(r'^', include(ItemHandlingResource.urls())),
+    )
