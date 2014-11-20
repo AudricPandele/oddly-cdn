@@ -28,7 +28,7 @@ class PdfProcessor(object):
         self.splitter(inputfile, mongo_id)
         self.jpeg_converter(mongo_id)
 
-   
+    #-----------------------------------------------------------------------------
     def splitter(self, inputfile, mongo_id):
         """
         Actually split the original PDF
@@ -42,7 +42,8 @@ class PdfProcessor(object):
             outputStream = file("%s%s/%s.pdf" % (settings.MEDIA_ROOT, mongo_id, i), "wb") # A changer
             output.write(outputStream)
             outputStream.close()
-    
+
+    #-----------------------------------------------------------------------------
     def jpeg_converter(self, mongo_id):
         """
         Convert splitted pdf pages to flattened JPEG
@@ -64,8 +65,12 @@ class PdfProcessor(object):
                 img.write(jpegwritepath)
             else:
                 logger.error("no files")
-
+                
+    #-----------------------------------------------------------------------------
     def process_update(self, mongoid):
+        """
+        Fetch current process progression to push it to front-end
+        """
         current_process_data = round(float(self.processed_page) / float(self.total_page) * 100, 2)
         current_process_entry = TaskManager.objects.filter(book_id = mongoid)
         print current_process_data
@@ -73,8 +78,12 @@ class PdfProcessor(object):
             current_process_entry.update(process_status=current_process_data)
         else:
             TaskManager.objects.create(book_id=mongoid, process_status=0)
-        
+            
+    #-----------------------------------------------------------------------------
     def uploadator(self, mongo_id):
+        """
+        Upload needed Meta values to API
+        """
         url = 'http://localhost:8000/api/v1/books_meta/'
         values = {'book_id' : mongo_id,
                   'meta_key' : 'test',
