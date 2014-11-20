@@ -80,16 +80,16 @@ class PdfProcessor(object):
             TaskManager.objects.create(book_id=mongoid, process_status=0)
             
     #-----------------------------------------------------------------------------
-    def uploadator(self, mongo_id):
-        """
-        Upload needed Meta values to API
-        """
-        url = 'http://localhost:8000/api/v1/books_meta/'
-        values = {'book_id' : mongo_id,
-                  'meta_key' : 'test',
-                  'meta_value' : 'test' }
-        headers = {'content-type': 'application/json', 'referer':'CDN'}
-        requests.post(url, data=json.dumps(values), headers=headers)
+    # def uploadator(self, mongo_id):
+    #     """
+    #     Upload needed Meta values to API
+    #     """
+    #     url = 'http://localhost:8000/api/v1/books_meta/'
+    #     values = {'book_id' : mongo_id,
+    #               'meta_key' : 'test',
+    #               'meta_value' : 'test' }
+    #     headers = {'content-type': 'application/json', 'referer':'CDN'}
+    #     requests.post(url, data=json.dumps(values), headers=headers)
         
 
 if __name__ == "__main__":
