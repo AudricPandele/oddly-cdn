@@ -86,14 +86,14 @@ class ItemHandlingResource(DjangoResource):
             format = self.request.META.get('CONTENT_TYPE', 'application/json')
 
         if format == 'application/x-www-form-urlencoded':
-                return self.request.POST
+            return self.request.POST
 
         if format.startswith('multipart'):
             multipart_data = self.request.POST.copy()
             multipart_data.update(self.request.FILES)
             return multipart_data
 
-        return super(OddlyFileHandling, self).deserialize(method, endpoint, format)
+        return super(ItemHandlingResource, self).deserialize(method, endpoint, format)
 
     @classmethod
     def urls(cls, name_prefix=None):

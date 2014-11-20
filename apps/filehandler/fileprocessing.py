@@ -5,8 +5,6 @@ import sys, os
 import requests
 import json
 
-from core.auth import PassAuth
-
 from django.conf import settings
 from pgmagick import Image
 
@@ -59,7 +57,6 @@ class PdfProcessor(object):
                 self.process_update(mongo_id)
                 imgpath = str(settings.MEDIA_ROOT + mongo_id +"/"+ i)
                 img = Image(imgpath)
-                #imgname = "%d.jpeg" % (p_number)
                 directory = "%s_%s" % (settings.MEDIA_ROOT, mongo_id) 
                 if not os.path.exists(directory):
                     os.mkdir(directory)
