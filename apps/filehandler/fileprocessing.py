@@ -21,7 +21,7 @@ class PdfProcessor(object):
     Simple class to split and flatten pdf to jpeg
     """
     def run(self, uploaded_file, mongo_id):
-        t = self.uploadator(mongo_id)
+        #t = self.uploadator(mongo_id)
         self.processed_page = 0
         inputfile = PdfFileReader(file(str(uploaded_file), "rb"))
         self.total_page = inputfile.numPages * 2
