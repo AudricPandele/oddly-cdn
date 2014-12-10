@@ -8,6 +8,7 @@ from fileprocessing import main as FileProcessingFunction
 from django.conf import settings
 
 from pgmagick import Image, Blob
+from wand.image import Image as wandimage
 
 def upload_file(request):
     if request.method == 'POST':
@@ -25,9 +26,9 @@ def get_thumb(request):
         blob = Blob()
         mongoid = request.path.split('/')
         thumb = str("%sthumbs/%s.jpg" % (settings.MEDIA_ROOT, mongoid[2]))
-        pgthumb = Image(thumb)
-        pgthumb.scale('100x100')
-        pgthumb.write(blob)
-        value = blob.data        
+        pgthumb = wandimage(filename=thumb)
+        pgthumb.transform('20%')
+        value = pgthumb.make_blob
+        import pdb; pdb.set_trace()
 
         return HttpResponse(value, content_type="image/jpeg")

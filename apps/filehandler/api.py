@@ -50,15 +50,15 @@ class OddlyFileHandling(ModelResource):
         mongoid = request.data.get('itemid')
         file_pdf = request.data.get('file_pdf')
         file_thumb = request.data.get('file_thumb')
-        upload_path = "%s/%s" % (mongoid, request.data.get('file_pdf').name)
+        upload_path = "%s/original/%s" % (mongoid, request.data.get('file_pdf').name)
         thumb_upload_path = "thumbs/%s" % (mongoid)
         thumb_save = default_storage.save(thumb_upload_path, ContentFile(file_thumb.read()))
         convert = self.convert_thumb_to_jpeg(current_thumb_path = "%sthumbs/%s" % (settings.MEDIA_ROOT, mongoid), mongoid = mongoid)
         path = default_storage.save(upload_path, ContentFile(file_pdf.read()))
         if path:
             uploaded_file = "%s%s" % (settings.MEDIA_ROOT, upload_path)
-            run_parser.delay(uploaded_file=uploaded_file, mongo_id=mongoid)
-            #fileprocessing.main(uploaded_file=uploaded_file, mongo_id=mongoid)
+            #run_parser.delay(uploaded_file=uploaded_file, mongo_id=mongoid)
+            fileprocessing.main(uploaded_file=uploaded_file, mongo_id=mongoid)
 
     def convert_thumb_to_jpeg(self, current_thumb_path, mongoid):
         img = Image(str(current_thumb_path))

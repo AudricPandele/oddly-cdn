@@ -7,8 +7,10 @@ import json
 
 from django.conf import settings
 
-from pgmagick import Image
+from pgmagick import Image, FilterTypes
 from PyPDF2 import PdfFileWriter, PdfFileReader
+
+from wand.image import Image as wandimage
 
 from apps.taskmanager.models import TaskManager
 
@@ -61,22 +63,25 @@ class PdfProcessor(object):
         p_number = 0
         progressbar = ""
         path = u"%s%s/" % (settings.MEDIA_ROOT, mongo_id)
-        
         for i in os.listdir(path):
-            # Je récupère chaque page du livre uploadé
-            p_number = p_number + 1
             
+            # Je récupère chaque page du livre uploadé
+        
+            p_number = p_number + 1
             if i.endswith(".pdf"):
+                i = "%s.pdf" % p_number
                 # Je considère que le nombre de pages converties s'incrémente de 1
                 # Je met à jour le process status   pour l'afficher dans le front
                 self.processed_page = self.processed_page + 1
                 self.process_update(mongo_id)
 
+                print i
                 # Je récupère le chemin absolu de mon pdf
                 # Je crée mon fichier image
                 # J'indique l'emplacement de sauvegarde du jpeg
                 imgpath = str(settings.MEDIA_ROOT + mongo_id +"/"+ i)
-                img = Image(imgpath)
+                
+                img = wandimage(filename=imgpath, resolution=200)
                 directory = "%s_%s" % (settings.MEDIA_ROOT, mongo_id)
 
                 # Je crée mon dossier si il n'existe pas
@@ -84,8 +89,12 @@ class PdfProcessor(object):
                     os.mkdir(directory)
 
                 # J'écris mon jpeg
-                jpegwritepath = str("%s_%s/%s.jpg" % (settings.MEDIA_ROOT, mongo_id, p_number))
-                img.write(jpegwritepath)
+                jpegwritepath = str("%s_%s/%s.jpeg" % (settings.MEDIA_ROOT, mongo_id, p_number))
+                img.ALPHA_CHANNEL_TYPES = ('flatten',)
+                img.format = 'jpeg'
+                img.compression_quality = 70
+                print jpegwritepath
+                img.save(filename=jpegwritepath)
                 
             else:
                 logger.error("no files")

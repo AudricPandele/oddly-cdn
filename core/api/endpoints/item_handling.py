@@ -24,59 +24,76 @@ from apps.filehandler.tasks import run_parser
 
 from pgmagick import Image
 
+#---------------------------------------------------------------------------
 class ItemHandlingResource(DjangoResource):
-
+    
+    #---------------------------------------------------------------------------
     def __init__(self, *args, **kwargs):
         super(ItemHandlingResource, self).__init__(*args, **kwargs)
 
-        # Add on a new top-level key, then define what HTTP methods it
-        # listens on & what methods it calls for them.
         self.http_methods.update({
             'fileupload': {
                 'POST': 'fileupload',
+            },
+            'coverupload': {
+                'POST': 'coverupload',
             }
         })
 
-    #Controls what data is included in the serialized output.
-    preparer = FieldsPreparer(fields={
-        'name': 'name',
-        'description': 'description',
-    })
-    
+    #---------------------------------------------------------------------------
     def is_authenticated(self):
         return True
-    
-    # GET /register
-    def list(self):
-        return Item.objects.all()
+            
+    #---------------------------------------------------------------------------
+    @skip_prepare
+    def coverupload(self):
+        mongoid = None
+        file_cover = None
 
-    # POST
-    def create(self):
-        Item.objects.create()
+        if self.data.get('file'):
+            # Getting datas 
+            file_cover = self.data.get('file')
+            mongoid = self.data.get('_id')
+            
+        if file_cover is not None:
+            # Actually upload then converting the cover
+            cover_upload_path = "cover/%s" % (mongoid)
+            cover_save = default_storage.save(cover_upload_path, ContentFile(file_cover.read()))
+            convert = self.convert_cover_to_jpeg(current_cover_path = "%scover/%s" % (settings.MEDIA_ROOT, mongoid), mongoid = mongoid)
         
-
+        
+    #---------------------------------------------------------------------------
     @skip_prepare
     def fileupload(self):
-        mongoid = self.data['itemid']
-        file_pdf = self.data['file_pdf']
-        file_thumb = self.data['file_thumb']
-        upload_path = "%s/%s" % (mongoid, file_pdf.name)
-        thumb_upload_path = "thumbs/%s" % (mongoid)
-        thumb_save = default_storage.save(thumb_upload_path, ContentFile(file_thumb.read()))
-        convert = self.convert_thumb_to_jpeg(current_thumb_path = "%sthumbs/%s" % (settings.MEDIA_ROOT, mongoid), mongoid = mongoid)
+        
+        mongoid = None
+        file_pdf = None
+
+        # Getting datas
+        if self.data.get('_id'):
+            mongoid = self.data.get('_id')
+        if self.data.get('file'):
+            file_pdf = self.data.get('file')
+
+        upload_path = "%s/original/%s" % (mongoid, file_pdf.name)
         path = default_storage.save(upload_path, ContentFile(file_pdf.read()))
+
         if path:
+            # Uploading and splitting the item
             uploaded_file = "%s%s" % (settings.MEDIA_ROOT, upload_path)
             run_parser.delay(uploaded_file=uploaded_file, mongo_id=mongoid)
-            #fileprocessing.main(uploaded_file=uploaded_file, mongo_id=mongoid)
 
-    def convert_thumb_to_jpeg(self, current_thumb_path, mongoid):
-        img = Image(str(current_thumb_path))
-        jpegwritepath = str("%sthumbs/%s.jpg" % (settings.MEDIA_ROOT, mongoid))
+    #---------------------------------------------------------------------------
+    def convert_cover_to_jpeg(self, current_cover_path, mongoid):
+        """
+        Cover are not always jpeg, so we should convert the uploaded file to jpeg, uh
+        """
+        img = Image(str(current_cover_path))
+        jpegwritepath = str("%scover/%s.jpg" % (settings.MEDIA_ROOT, mongoid))
         img.write(jpegwritepath)
-        remove_tmp_file = os.remove("%sthumbs/%s" % (settings.MEDIA_ROOT, mongoid))
+        remove_tmp_file = os.remove("%scover/%s" % (settings.MEDIA_ROOT, mongoid))
 
-
+    #---------------------------------------------------------------------------
     def deserialize(self, method, endpoint, body):
         format = None
         """
@@ -95,9 +112,11 @@ class ItemHandlingResource(DjangoResource):
 
         return super(ItemHandlingResource, self).deserialize(method, endpoint, format)
 
+    #---------------------------------------------------------------------------
     @classmethod
     def urls(cls, name_prefix=None):
         urlpatterns = super(ItemHandlingResource, cls).urls(name_prefix=name_prefix)
         return urlpatterns + patterns('',
             url(r'^fileupload/$', csrf_exempt(cls.as_view('fileupload')), name=cls.build_url_name('fileupload', name_prefix)),
+            url(r'^coverupload/$', csrf_exempt(cls.as_view('coverupload')), name=cls.build_url_name('coverupload', name_prefix)),
         )
