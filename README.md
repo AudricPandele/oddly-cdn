@@ -18,3 +18,6 @@ Créer le fichier de conf dans le projet django cdn en copiant collant la config
 créer un user celery ( si il ne s'est pas créé automatiquement ) et le metter dans la config supervisor. Mettre celery dans le meme groupe que celui qui a le droit de lire & ecrire les log + executer manage.py
 
 Attention, donner les droits à www-data:www-data sur le dossier media, sinon apache pourra pas écrire dedans.
+
+
+Preprod : L'utilisateur rentré dans supervisord.conf est www-data. Les logs appartiennent à celery:www-data
