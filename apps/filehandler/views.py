@@ -19,7 +19,7 @@ def artist_thumb(request, mongoid, quality):
         blob = Blob()
         thumb = str("%sartist/thumbs/%s.jpg" % (settings.MEDIA_ROOT, mongoid))
         pgthumb = wandimage(filename=thumb)
-        pgthumb.transform(resize = QUALITY.get(quality))
+        pgthumb.transform(resize = QUALITY_IMAGE.get(quality))
         value = pgthumb.make_blob
         return HttpResponse(value, content_type="image/jpeg")
 
@@ -28,7 +28,7 @@ def artist_cover(request, mongoid, quality):
         blob = Blob()
         cover = str("%artist/covers/%s.jpg" % (settings.MEDIA_ROOT, mongoid))
         pgthumb = wandimage(filename=cover)
-        pgthumb.transform(resize = QUALITY.get(quality))
+        pgthumb.transform(resize = QUALITY_IMAGE.get(quality))
         value = pgthumb.make_blob(format='jpeg')
         return HttpResponse(value, content_type="image/jpeg")
     
@@ -56,6 +56,6 @@ def item_cover(request, mongoid, quality):
         blob = Blob()
         cover = str("%sitems/covers/%s.jpg" % (settings.MEDIA_ROOT, mongoid))
         pgthumb = wandimage(filename=cover)
-        pgthumb.transform(resize = QUALITY.get(quality))
+        pgthumb.transform(resize = QUALITY_IMAGE.get(quality))
         value = pgthumb.make_blob(format='jpeg')
         return HttpResponse(value, mimetype="image/jpeg")
