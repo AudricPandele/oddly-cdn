@@ -50,7 +50,7 @@ class PdfProcessor(object):
             
             output = PdfFileWriter()
             output.addPage(inputfile.getPage(i))
-            outputStream = file("%s%s/%s.pdf" % (settings.MEDIA_ROOT, mongo_id, i), "wb")
+            outputStream = file("%sprocessed/%s/%s.pdf" % (settings.MEDIA_ROOT, mongo_id, i), "wb")
             output.write(outputStream)
             outputStream.close()
 
@@ -89,7 +89,7 @@ class PdfProcessor(object):
                     os.mkdir(directory)
 
                 # J'écris mon jpeg
-                jpegwritepath = str("%s_%s/%s.jpeg" % (settings.MEDIA_ROOT, mongo_id, p_number))
+                jpegwritepath = str("%sprocessed/_%s/%s.jpeg" % (settings.MEDIA_ROOT, mongo_id, p_number))
                 img.ALPHA_CHANNEL_TYPES = ('flatten',)
                 img.format = 'jpeg'
                 img.compression_quality = 70

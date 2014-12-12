@@ -57,9 +57,9 @@ class ItemHandlingResource(DjangoResource):
             
         if file_cover is not None:
             # Actually upload then converting the cover
-            cover_upload_path = "cover/%s" % (mongoid)
+            cover_upload_path = "items/covers/%s" % (mongoid)
             cover_save = default_storage.save(cover_upload_path, ContentFile(file_cover.read()))
-            convert = self.convert_cover_to_jpeg(current_cover_path = "%scover/%s" % (settings.MEDIA_ROOT, mongoid), mongoid = mongoid)
+            convert = self.convert_cover_to_jpeg(current_cover_path = "%sitems/covers/%s" % (settings.MEDIA_ROOT, mongoid), mongoid = mongoid)
         
         
     #---------------------------------------------------------------------------
@@ -75,7 +75,7 @@ class ItemHandlingResource(DjangoResource):
         if self.data.get('file'):
             file_pdf = self.data.get('file')
 
-        upload_path = "%s/original/%s" % (mongoid, file_pdf.name)
+        upload_path = "items/pdf/original/%s/%s" % (mongoid, file_pdf.name)
         path = default_storage.save(upload_path, ContentFile(file_pdf.read()))
 
         if path:
@@ -89,9 +89,9 @@ class ItemHandlingResource(DjangoResource):
         Cover are not always jpeg, so we should convert the uploaded file to jpeg, uh
         """
         img = Image(str(current_cover_path))
-        jpegwritepath = str("%scover/%s.jpg" % (settings.MEDIA_ROOT, mongoid))
+        jpegwritepath = str("%sitems/covers/%s.jpg" % (settings.MEDIA_ROOT, mongoid))
         img.write(jpegwritepath)
-        remove_tmp_file = os.remove("%scover/%s" % (settings.MEDIA_ROOT, mongoid))
+        remove_tmp_file = os.remove("%sitems/covers/%s" % (settings.MEDIA_ROOT, mongoid))
 
     #---------------------------------------------------------------------------
     def deserialize(self, method, endpoint, body):
