@@ -33,7 +33,7 @@ def artist_cover(request, mongoid, quality):
         pgthumb.transform(resize = QUALITY.get(quality))
         value = pgthumb.make_blob(format='jpeg')
         return HttpResponse(value, content_type="image/jpeg")
-    
+
 def item_file(request, mongoid, quality, page_number):
 
     if request.method == "GET":
@@ -43,16 +43,16 @@ def item_file(request, mongoid, quality, page_number):
             item_path = "%sitems/pdf/processed/_%s/%s.jpeg" % (settings.MEDIA_ROOT, mongoid, page_number)
             item_file = open(item_path, 'r')
             return HttpResponse(item_file, content_type="image/jpeg")
-        
-        if quality == u"HD":            
+
+        if quality == u"HD":
             item_path = "%sitems/pdf/processed/%s/%s.pdf" % (settings.MEDIA_ROOT, mongoid, page_number)
             item_file = open(item_path,'r')
             return HttpResponse(item_file, content_type="application/pdf")
 
     return HttpResponse(status="400")
-                
-        
-    
+
+
+
 def item_cover(request, mongoid, quality):
     if request.method == "GET":
         blob = Blob()
@@ -61,3 +61,7 @@ def item_cover(request, mongoid, quality):
         pgthumb.transform(resize = QUALITY.get(quality))
         value = pgthumb.make_blob(format='jpeg')
         return HttpResponse(value, mimetype="image/jpeg")
+
+
+    
+    
