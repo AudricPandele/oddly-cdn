@@ -13,7 +13,7 @@ then
     echo "Item covers directory"
     mkdir -p $cdn_path/media/items/covers
     echo "Item processed directory"
-    mkdir -p $cdn_path/media/items/processed
+    mkdir -p $cdn_path/media/items/pdf/processed
     
     echo "All done"
 else
@@ -30,7 +30,7 @@ else
         echo "Item covers directory"
         mkdir -p $cdn_path/media/items/covers
         echo "Item processed directory"
-        mkdir -p $cdn_path/media/items/processed
+        mkdir -p $cdn_path/media/items/pdf/processed
         echo "All done"
     else
         echo "You are obviously derping"

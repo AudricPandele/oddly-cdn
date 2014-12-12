@@ -41,7 +41,11 @@ class PdfProcessor(object):
         """
         Actually split the original PDF
         """
-
+        # Je crée mon dossier si il n'existe pas
+        directory = "%sitems/pdf/processed/%s" % (settings.MEDIA_ROOT, mongo_id)
+        if not os.path.exists(directory):
+            os.mkdir(directory)
+            
         for i in xrange(inputfile.numPages):
             # Je considère que le nombre de pages converties s'incrémente de 1
             # Je met à jour le process status   pour l'afficher dans le front
@@ -50,7 +54,7 @@ class PdfProcessor(object):
             
             output = PdfFileWriter()
             output.addPage(inputfile.getPage(i))
-            outputStream = file("%sprocessed/%s/%s.pdf" % (settings.MEDIA_ROOT, mongo_id, i), "wb")
+            outputStream = file("%sitems/pdf/processed/%s/%s.pdf" % (settings.MEDIA_ROOT, mongo_id, i), "wb")
             output.write(outputStream)
             outputStream.close()
 
@@ -62,7 +66,7 @@ class PdfProcessor(object):
         
         p_number = 0
         progressbar = ""
-        path = u"%s%s/" % (settings.MEDIA_ROOT, mongo_id)
+        path = u"%sitems/pdf/processed/%s" % (settings.MEDIA_ROOT, mongo_id)
         for i in os.listdir(path):
             
             # Je récupère chaque page du livre uploadé
@@ -79,17 +83,17 @@ class PdfProcessor(object):
                 # Je récupère le chemin absolu de mon pdf
                 # Je crée mon fichier image
                 # J'indique l'emplacement de sauvegarde du jpeg
-                imgpath = str(settings.MEDIA_ROOT + mongo_id +"/"+ i)
+                imgpath = str(settings.MEDIA_ROOT + "items/pdf/processed/" + mongo_id +"/"+ i)
                 
                 img = wandimage(filename=imgpath, resolution=200)
-                directory = "%s_%s" % (settings.MEDIA_ROOT, mongo_id)
+                directory = "%sitems/pdf/processed/_%s" % (settings.MEDIA_ROOT, mongo_id)
 
                 # Je crée mon dossier si il n'existe pas
                 if not os.path.exists(directory):
                     os.mkdir(directory)
 
                 # J'écris mon jpeg
-                jpegwritepath = str("%sprocessed/_%s/%s.jpeg" % (settings.MEDIA_ROOT, mongo_id, p_number))
+                jpegwritepath = str("%sitems/pdf/processed/_%s/%s.jpeg" % (settings.MEDIA_ROOT, mongo_id, p_number))
                 img.ALPHA_CHANNEL_TYPES = ('flatten',)
                 img.format = 'jpeg'
                 img.compression_quality = 70
