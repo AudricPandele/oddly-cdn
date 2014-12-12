@@ -21,3 +21,7 @@ Attention, donner les droits à www-data:www-data sur le dossier media, sinon ap
 
 
 Preprod : L'utilisateur rentré dans supervisord.conf est www-data. Les logs appartiennent à celery:www-data
+
+Pour lancer supervisord: dans le dossier du cdn, taper supervisord -c supervisord.conf
+
+Faire un script bash pour le lancer au démarrage
