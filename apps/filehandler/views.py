@@ -22,7 +22,7 @@ def artist_thumb(request, mongoid, quality):
         thumb = str("%sartist/thumbs/%s.jpg" % (settings.MEDIA_ROOT, mongoid))
         pgthumb = wandimage(filename=thumb)
         pgthumb.transform(resize = QUALITY.get(quality))
-        value = pgthumb.make_blob
+        value = pgthumb.make_blob(format='jpeg')
         return HttpResponse(value, content_type="image/jpeg")
 
 def artist_cover(request, mongoid, quality):
