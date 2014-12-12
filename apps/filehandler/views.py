@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django.shortcuts import render
 
 from django.http import HttpResponseRedirect, HttpResponse
@@ -8,7 +10,7 @@ from django.conf import settings
 from pgmagick import Image, Blob
 from wand.image import Image as wandimage
 
-QUALITY_IMAGE = {
+QUALITY = {
     'small':'20%',
     'medium':'60%',
     'large':'100%',
@@ -19,7 +21,7 @@ def artist_thumb(request, mongoid, quality):
         blob = Blob()
         thumb = str("%sartist/thumbs/%s.jpg" % (settings.MEDIA_ROOT, mongoid))
         pgthumb = wandimage(filename=thumb)
-        pgthumb.transform(resize = QUALITY_IMAGE.get(quality))
+        pgthumb.transform(resize = QUALITY.get(quality))
         value = pgthumb.make_blob
         return HttpResponse(value, content_type="image/jpeg")
 
@@ -28,7 +30,7 @@ def artist_cover(request, mongoid, quality):
         blob = Blob()
         cover = str("%artist/covers/%s.jpg" % (settings.MEDIA_ROOT, mongoid))
         pgthumb = wandimage(filename=cover)
-        pgthumb.transform(resize = QUALITY_IMAGE.get(quality))
+        pgthumb.transform(resize = QUALITY.get(quality))
         value = pgthumb.make_blob(format='jpeg')
         return HttpResponse(value, content_type="image/jpeg")
     
@@ -56,6 +58,6 @@ def item_cover(request, mongoid, quality):
         blob = Blob()
         cover = str("%sitems/covers/%s.jpg" % (settings.MEDIA_ROOT, mongoid))
         pgthumb = wandimage(filename=cover)
-        pgthumb.transform(resize = QUALITY_IMAGE.get(quality))
+        pgthumb.transform(resize = QUALITY.get(quality))
         value = pgthumb.make_blob(format='jpeg')
         return HttpResponse(value, mimetype="image/jpeg")
