@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding:utf-8 -*-
 
 from django.shortcuts import render
 
@@ -28,7 +28,7 @@ def artist_thumb(request, mongoid, quality):
 def artist_cover(request, mongoid, quality):
     if request.method == "GET":
         blob = Blob()
-        cover = str("%artist/covers/%s.jpg" % (settings.MEDIA_ROOT, mongoid))
+        cover = str("%sartist/covers/%s.jpg" % (settings.MEDIA_ROOT, mongoid))
         pgthumb = wandimage(filename=cover)
         pgthumb.transform(resize = QUALITY.get(quality))
         value = pgthumb.make_blob(format='jpeg')
