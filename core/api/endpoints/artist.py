@@ -65,7 +65,6 @@ class ArtistHandlingResource(DjangoResource):
     #---------------------------------------------------------------------------
     @skip_prepare
     def thumbupload(self):
-        import pdb; pdb.set_trace()
         mongoid = None
         file_cover = None
 
@@ -114,6 +113,6 @@ class ArtistHandlingResource(DjangoResource):
     def urls(cls, name_prefix=None):
         urlpatterns = super(ArtistHandlingResource, cls).urls(name_prefix=name_prefix)
         return urlpatterns + patterns('',
-            url(r'^thumbupload/$', csrf_exempt(cls.as_view('thumbupload')), name=cls.build_url_name('thumbupload', name_prefix)),
-            url(r'^coverupload/$', csrf_exempt(cls.as_view('coverupload')), name=cls.build_url_name('coverupload', name_prefix)),
+                                      url(r'^artist/thumb/$', csrf_exempt(cls.as_view('thumbupload')), name=cls.build_url_name('thumbupload', name_prefix)),
+            url(r'^artist/cover/$', csrf_exempt(cls.as_view('coverupload')), name=cls.build_url_name('coverupload', name_prefix)),
         )

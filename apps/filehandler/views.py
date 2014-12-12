@@ -21,8 +21,8 @@ def upload_file(request):
     return HttpResponseRedirect('/')
 
 def get_thumb(request):
-    if request.method == "GET":
 
+    if request.method == "GET":
         blob = Blob()
         mongoid = request.path.split('/')
         thumb = str("%sthumbs/%s.jpg" % (settings.MEDIA_ROOT, mongoid[2]))
