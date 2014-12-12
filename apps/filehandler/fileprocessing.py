@@ -63,8 +63,8 @@ class PdfProcessor(object):
         """
         Convert splitted pdf pages to flattened JPEG
         """
-        
-        p_number = 0
+        # Le numéro est initialisé à -1 sinon il prend la page 1 et pas la page 0
+        p_number = -1
         progressbar = ""
         path = u"%sitems/pdf/processed/%s" % (settings.MEDIA_ROOT, mongo_id)
         for i in os.listdir(path):
@@ -74,12 +74,14 @@ class PdfProcessor(object):
             p_number = p_number + 1
             if i.endswith(".pdf"):
                 i = "%s.pdf" % p_number
+                
                 # Je considère que le nombre de pages converties s'incrémente de 1
                 # Je met à jour le process status   pour l'afficher dans le front
                 self.processed_page = self.processed_page + 1
                 self.process_update(mongo_id)
 
-                print i
+                print "This is the file %s" % (i)
+                print "This is the page number %d" % (p_number)
                 # Je récupère le chemin absolu de mon pdf
                 # Je crée mon fichier image
                 # J'indique l'emplacement de sauvegarde du jpeg
@@ -108,12 +110,10 @@ class PdfProcessor(object):
         """
         Fetch current process progression to push it to front-end
         """
-
         # MUCH MATH SO SCIENCE
         current_process_data = round(float(self.processed_page) / float(self.total_page) * 100, 2)
         current_process_entry = TaskManager.objects.filter(book_id = mongoid)
         logger.info(current_process_data)
-        
         if current_process_entry:
             current_process_entry.update(process_status=current_process_data)
             
