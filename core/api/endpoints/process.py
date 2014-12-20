@@ -44,9 +44,13 @@ class ProcessResource(DjangoResource):
     #---------------------------------------------------------------------------
     @skip_prepare
     def processdetail(self, mongoid):
-        status = TaskManager.objects.get(book_id=mongoid)
+        progress = TaskManager.objects.get(book_id=mongoid)
         return {
-            "status":status.process_status
+            "progress":progress.progress,
+            "status":progress.status,
+            "current":progress.current,
+            "total":progress.total,
+
             }
         
     #---------------------------------------------------------------------------
