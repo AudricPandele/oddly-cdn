@@ -6,7 +6,18 @@ class TaskManager(models.Model):
         max_length=255
         )
 
-    process_status = models.CharField(
+    progress = models.CharField(
+        max_length = 100
+        )
+    
+    status = models.CharField(
         max_length = 100
         )
 
+    current = models.CharField(
+        max_length=50
+        )
+
+    total = models.CharField(
+        max_length=50
+        )

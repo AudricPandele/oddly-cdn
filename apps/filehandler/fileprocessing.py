@@ -78,7 +78,7 @@ class PdfProcessor(object):
                 # Je considère que le nombre de pages converties s'incrémente de 1
                 # Je met à jour le process status   pour l'afficher dans le front
                 self.processed_page = self.processed_page + 1
-                self.process_update(mongo_id)
+                self.process_update(mongo_id, p_number)
 
                 print "This is the file %s" % (i)
                 print "This is the page number %d" % (p_number)
@@ -106,7 +106,7 @@ class PdfProcessor(object):
                 logger.error("no files")
                 
     #-----------------------------------------------------------------------------
-    def process_update(self, mongoid):
+    def process_update(self, mongoid, current):
         """
         Fetch current process progression to push it to front-end
         """
@@ -114,11 +114,14 @@ class PdfProcessor(object):
         current_process_data = round(float(self.processed_page) / float(self.total_page) * 100, 2)
         current_process_entry = TaskManager.objects.filter(book_id = mongoid)
         logger.info(current_process_data)
+        status = "RUNNING"
         if current_process_entry:
-            current_process_entry.update(process_status=current_process_data)
-            
+            if current_process_data > 100:
+                status = "FINISHED"
+            current_process_entry.update(progress=current_process_data, current=current, status=status)
         else:
-            TaskManager.objects.create(book_id=mongoid, process_status=0)
+            total = self.total_page / 2
+            TaskManager.objects.create(book_id=mongoid, process_status=0, total=total, status=status)
             
     #-----------------------------------------------------------------------------
     # def uploadator(self, mongo_id):
