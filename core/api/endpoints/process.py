@@ -54,5 +54,5 @@ class ProcessResource(DjangoResource):
     def urls(cls, name_prefix=None):
         urlpatterns = super(ProcessResource, cls).urls(name_prefix=name_prefix)
         return urlpatterns + patterns('',
-            url(r'^status/([0-9a-fA-F]{24})$', csrf_exempt(cls.as_view('processdetail')), name=cls.build_url_name('processdetail', name_prefix)),
+            url(r'^progress/([0-9a-fA-F]{24})$', csrf_exempt(cls.as_view('processdetail')), name=cls.build_url_name('processdetail', name_prefix)),
         )
