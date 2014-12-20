@@ -50,7 +50,7 @@ class PdfProcessor(object):
             # Je considère que le nombre de pages converties s'incrémente de 1
             # Je met à jour le process status   pour l'afficher dans le front
             self.processed_page = self.processed_page + 1
-            self.process_update(mongo_id)
+            self.process_update(mongo_id, self.processed_page)
             
             output = PdfFileWriter()
             output.addPage(inputfile.getPage(i))
