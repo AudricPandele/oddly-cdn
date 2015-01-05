@@ -45,18 +45,19 @@ class ProcessResource(DjangoResource):
     @skip_prepare
     def processdetail(self, mongoid):
         progress = TaskManager.objects.get(book_id=mongoid)
-        return {
-            "progress":progress.progress,
-            "status":progress.status,
-            "current":progress.current,
-            "total":progress.total,
-
-            }
+        return { 
+            "process": {
+                "progress":progress.progress,
+                "status":progress.status,
+                "current":progress.current,
+                "total":progress.total,
+                }
+             }
         
     #---------------------------------------------------------------------------
     @classmethod
     def urls(cls, name_prefix=None):
         urlpatterns = super(ProcessResource, cls).urls(name_prefix=name_prefix)
         return urlpatterns + patterns('',
-            url(r'^progress/([0-9a-fA-F]{24})$', csrf_exempt(cls.as_view('processdetail')), name=cls.build_url_name('processdetail', name_prefix)),
+            url(r'^status/([0-9a-fA-F]{24})$', csrf_exempt(cls.as_view('processdetail')), name=cls.build_url_name('processdetail', name_prefix)),
         )

@@ -54,7 +54,7 @@ class PdfProcessor(object):
             
             output = PdfFileWriter()
             output.addPage(inputfile.getPage(i))
-            outputStream = file("%sitems/pdf/processed/%s/%s.pdf" % (settings.MEDIA_ROOT, mongo_id, i), "wb")
+            outputStream = file("%sitems/pdf/processed/%s/%s.pdf" % (settings.MEDIA_ROOT, mongo_id, i+1), "wb")
             output.write(outputStream)
             outputStream.close()
 
@@ -64,16 +64,16 @@ class PdfProcessor(object):
         Convert splitted pdf pages to flattened JPEG
         """
         # Le numéro est initialisé à -1 sinon il prend la page 1 et pas la page 0
-        p_number = -1
+        p_number = 0
         progressbar = ""
         path = u"%sitems/pdf/processed/%s" % (settings.MEDIA_ROOT, mongo_id)
-        for i in os.listdir(path):
-            
+        for i in sorted(os.listdir(path)):
+            print "this is i : %s" % i
             # Je récupère chaque page du livre uploadé
         
             p_number = p_number + 1
             if i.endswith(".pdf"):
-                i = "%s.pdf" % p_number
+                i = "%s.pdf" % p_number 
                 
                 # Je considère que le nombre de pages converties s'incrémente de 1
                 # Je met à jour le process status   pour l'afficher dans le front
@@ -116,12 +116,12 @@ class PdfProcessor(object):
         logger.info(current_process_data)
         status = "RUNNING"
         if current_process_entry:
-            if current_process_data > 100:
+            if current_process_data >= 100:
                 status = "FINISHED"
             current_process_entry.update(progress=current_process_data, current=current, status=status)
         else:
             total = self.total_page / 2
-            TaskManager.objects.create(book_id=mongoid, process_status=0, total=total, status=status)
+            TaskManager.objects.create(book_id=mongoid, progress=0, total=total, status=status)
             
     #-----------------------------------------------------------------------------
     # def uploadator(self, mongo_id):
