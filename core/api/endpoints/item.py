@@ -26,7 +26,7 @@ from pgmagick import Image
 
 #---------------------------------------------------------------------------
 class ItemHandlingResource(DjangoResource):
-    
+
     #---------------------------------------------------------------------------
     def __init__(self, *args, **kwargs):
         super(ItemHandlingResource, self).__init__(*args, **kwargs)
@@ -37,13 +37,16 @@ class ItemHandlingResource(DjangoResource):
             },
             'coverupload': {
                 'POST': 'coverupload',
+            },
+            'backgroundupload': {
+                'POST': 'backgroundupload',
             }
         })
 
     #---------------------------------------------------------------------------
     def is_authenticated(self):
         return True
-            
+
     #---------------------------------------------------------------------------
     @skip_prepare
     def coverupload(self):
@@ -51,21 +54,35 @@ class ItemHandlingResource(DjangoResource):
         file_cover = None
 
         if self.data.get('file'):
-            # Getting datas 
+            # Getting datas
             file_cover = self.data.get('file')
             mongoid = self.data.get('_id')
-            
+
         if file_cover is not None:
             # Actually upload then converting the cover
             cover_upload_path = "items/covers/%s" % (mongoid)
             cover_save = default_storage.save(cover_upload_path, ContentFile(file_cover.read()))
             convert = self.convert_cover_to_jpeg(current_cover_path = "%sitems/covers/%s" % (settings.MEDIA_ROOT, mongoid), mongoid = mongoid)
-        
-        
+
+    #---------------------------------------------------------------------------
+    @skip_prepare
+    def backgroundupload(self):
+        mongoid = None
+        file_background = None
+
+        if self.data.get('file'):
+            file_background = self.data.get('file')
+            mongoid = self.data.get('_id')
+
+        if file_background is not None:
+            bg_upload_path = "items/backgrounds/%s" % (mongoid)
+            bg_save = default_storage.save(bg_upload_path, ContentFile(file_background.read()))
+            convert = self.convert_bg_to_jpeg(current_bg_path = "%items/backgrounds/%s" % (settings.MEDIA_ROOT, mongoid), mongoid = mongoid)
+
     #---------------------------------------------------------------------------
     @skip_prepare
     def fileupload(self):
-        
+
         mongoid = None
         file_pdf = None
 
@@ -93,6 +110,12 @@ class ItemHandlingResource(DjangoResource):
         img.write(jpegwritepath)
         remove_tmp_file = os.remove("%sitems/covers/%s" % (settings.MEDIA_ROOT, mongoid))
 
+    def convert_bg_to_jpeg(self, current_bg_path, mongoid):
+        img = Image(str(current_bg_path))
+        jpegwritepath = str("%sitems/backgrounds/%s.jpg" % (settings.MEDIA_ROOT, mongoid))
+        img.write(jpegwritepath)
+        remove_tmp_file = os.remove("%sitems/backgrounds/%s" % (settings.MEDIA_ROOT, mongoid))
+
     #---------------------------------------------------------------------------
     def deserialize(self, method, endpoint, body):
         format = None
@@ -119,4 +142,5 @@ class ItemHandlingResource(DjangoResource):
         return urlpatterns + patterns('',
             url(r'^item/pdf/$', csrf_exempt(cls.as_view('fileupload')), name=cls.build_url_name('fileupload', name_prefix)),
             url(r'^item/cover/$', csrf_exempt(cls.as_view('coverupload')), name=cls.build_url_name('coverupload', name_prefix)),
+            url(r'^item/background/$', csrf_exempt(cls.as_view('backgroundupload')), name=cls.build_url_name('backgroundupload', name_prefix))
         )
