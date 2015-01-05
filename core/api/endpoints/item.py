@@ -77,7 +77,7 @@ class ItemHandlingResource(DjangoResource):
         if file_background is not None:
             bg_upload_path = "items/backgrounds/%s" % (mongoid)
             bg_save = default_storage.save(bg_upload_path, ContentFile(file_background.read()))
-            convert = self.convert_bg_to_jpeg(current_bg_path = "%items/backgrounds/%s" % (settings.MEDIA_ROOT, mongoid), mongoid = mongoid)
+            convert = self.convert_bg_to_jpeg(current_bg_path = "%sitems/backgrounds/%s" % (settings.MEDIA_ROOT, mongoid), mongoid = mongoid)
 
     #---------------------------------------------------------------------------
     @skip_prepare
