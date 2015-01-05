@@ -20,7 +20,7 @@ créer un user celery ( si il ne s'est pas créé automatiquement ) et le metter
 
 - Preprod & Prod : 
   - L'utilisateur rentré dans supervisord.conf est www-data. Les logs appartiennent à celery:www-data
-  - Ne pas oublier de chmod media avec www-data aussi
+  - Ne pas oublier de chmod media -R avec www-data aussi, mais le dossier processed doit appartenir à oddly:oddly
 
 _Pour lancer supervisord: dans le dossier du cdn, taper supervisord -c supervisord.conf_
 
