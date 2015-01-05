@@ -63,5 +63,11 @@ def item_cover(request, mongoid, quality):
         return HttpResponse(value, mimetype="image/jpeg")
 
 
-    
-    
+def item_background(request, mongoid, quality):
+    if request.method == "GET":
+        blob = Blob()
+        cover = str("%sitems/backgrounds/%s.jpg" % (settings.MEDIA_ROOT, mongoid))
+        pgthumb = wandimage(filename=cover)
+        pgthumb.transform(resize = QUALITY.get(quality))
+        value = pgthumb.make_blob(format='jpeg')
+        return HttpResponse(value, mimetype="image/jpeg")
