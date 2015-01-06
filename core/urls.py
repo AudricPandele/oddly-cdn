@@ -15,7 +15,7 @@ urlpatterns = patterns('',
     url(r'^artist/thumb/([0-9a-fA-F]{24})/([a-z]{,6})$', 'apps.filehandler.views.artist_thumb', name='artist_thumb'),
     url(r'^artist/cover/([0-9a-fA-F]{24})/([a-z]{,6})$', 'apps.filehandler.views.artist_cover', name='artist_cover'),
 
-    url(r'^item/([0-9a-fA-F]{24})/([A-Z]{2})/([0-9])$', 'apps.filehandler.views.item_file', name='item_file'),
+    url(r'^item/([0-9a-fA-F]{24})/([A-Z]{2})/([0-9]+)$', 'apps.filehandler.views.item_file', name='item_file'),
     url(r'^item/cover/([0-9a-fA-F]{24})/([a-z]{,6})$', 'apps.filehandler.views.item_cover', name='item_cover'),
     url(r'^item/background/([0-9a-fA-F]{24})/([a-z]{,6})$', 'apps.filehandler.views.item_background', name='item_background'),
     url(r'^', include(ProcessResource.urls())),
