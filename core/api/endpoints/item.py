@@ -140,7 +140,7 @@ class ItemHandlingResource(DjangoResource):
     def urls(cls, name_prefix=None):
         urlpatterns = super(ItemHandlingResource, cls).urls(name_prefix=name_prefix)
         return urlpatterns + patterns('',
-            url(r'^item/pdf/$', csrf_exempt(cls.as_view('fileupload')), name=cls.build_url_name('fileupload', name_prefix)),
-            url(r'^item/cover/$', csrf_exempt(cls.as_view('coverupload')), name=cls.build_url_name('coverupload', name_prefix)),
-            url(r'^item/background/$', csrf_exempt(cls.as_view('backgroundupload')), name=cls.build_url_name('backgroundupload', name_prefix))
+            url(r'^item/pdf$', csrf_exempt(cls.as_view('fileupload')), name=cls.build_url_name('fileupload', name_prefix)),
+            url(r'^item/cover$', csrf_exempt(cls.as_view('coverupload')), name=cls.build_url_name('coverupload', name_prefix)),
+            url(r'^item/background$', csrf_exempt(cls.as_view('backgroundupload')), name=cls.build_url_name('backgroundupload', name_prefix))
         )
