@@ -16,7 +16,7 @@ QUALITY = {
     'large':'100%',
     }
 
-def getImage(thumb):
+def getImage(thumb, quality):
     blob = Blob()
     pgthumb = wandimage(filename=thumb)
     pgthumb.transform(resize = QUALITY.get(quality))
@@ -25,23 +25,23 @@ def getImage(thumb):
 
 def artist_thumb(request, mongoid, quality):
     if request.method == "GET":
-        return getImage(str("%sartist/thumbs/%s.jpg" % (settings.MEDIA_ROOT, mongoid)))
+        return getImage(str("%sartist/thumbs/%s.jpg" % (settings.MEDIA_ROOT, mongoid)), quality)
 
 def artist_cover(request, mongoid, quality):
     if request.method == "GET":
-        return getImage(str("%sartist/covers/%s.jpg" % (settings.MEDIA_ROOT, mongoid)))
+        return getImage(str("%sartist/covers/%s.jpg" % (settings.MEDIA_ROOT, mongoid)), quality)
 
 def item_cover(request, mongoid, quality):
     if request.method == "GET":
-        return getImage(str("%sitems/covers/%s.jpg" % (settings.MEDIA_ROOT, mongoid)))
+        return getImage(str("%sitems/covers/%s.jpg" % (settings.MEDIA_ROOT, mongoid)), quality)
 
 def item_background(request, mongoid, quality):
     if request.method == "GET":
-        return getImage(str("%sitems/backgrounds/%s.jpg" % (settings.MEDIA_ROOT, mongoid)))
+        return getImage(str("%sitems/backgrounds/%s.jpg" % (settings.MEDIA_ROOT, mongoid)), quality)
 
 def home_advert_image(request, mongoid, quality):
     if request.method == "GET":
-        return getImage(str("%sad/home/%s.jpg" % (settings.MEDIA_ROOT, mongoid)))
+        return getImage(str("%sad/home/%s.jpg" % (settings.MEDIA_ROOT, mongoid)), quality)
 
 def item_file(request, mongoid, quality, page_number):
 
