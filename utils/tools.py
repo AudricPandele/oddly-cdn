@@ -9,7 +9,7 @@ from django.core.files.base import ContentFile
 from pgmagick import Image
 
 
-def uploadImage(file = None, relativePath, absolutePath, extensionPath):
+def uploadImage(file = None, relativePath = "", absolutePath = "", extensionPath = ""):
     if file:
         default_storage.save(relativePath, ContentFile(file.read()))
         convertImage(oldPath = absolutePath, newPath = extensionPath)
