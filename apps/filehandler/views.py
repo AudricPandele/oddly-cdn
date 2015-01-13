@@ -16,23 +16,32 @@ QUALITY = {
     'large':'100%',
     }
 
+def getImage(thumb):
+    blob = Blob()
+    pgthumb = wandimage(filename=thumb)
+    pgthumb.transform(resize = QUALITY.get(quality))
+    value = pgthumb.make_blob(format='jpeg')
+    return HttpResponse(value, content_type="image/jpeg")
+
 def artist_thumb(request, mongoid, quality):
     if request.method == "GET":
-        blob = Blob()
-        thumb = str("%sartist/thumbs/%s.jpg" % (settings.MEDIA_ROOT, mongoid))
-        pgthumb = wandimage(filename=thumb)
-        pgthumb.transform(resize = QUALITY.get(quality))
-        value = pgthumb.make_blob(format='jpeg')
-        return HttpResponse(value, content_type="image/jpeg")
+        return getImage(str("%sartist/thumbs/%s.jpg" % (settings.MEDIA_ROOT, mongoid)))
 
 def artist_cover(request, mongoid, quality):
     if request.method == "GET":
-        blob = Blob()
-        cover = str("%sartist/covers/%s.jpg" % (settings.MEDIA_ROOT, mongoid))
-        pgthumb = wandimage(filename=cover)
-        pgthumb.transform(resize = QUALITY.get(quality))
-        value = pgthumb.make_blob(format='jpeg')
-        return HttpResponse(value, content_type="image/jpeg")
+        return getImage(str("%sartist/covers/%s.jpg" % (settings.MEDIA_ROOT, mongoid)))
+
+def item_cover(request, mongoid, quality):
+    if request.method == "GET":
+        return getImage(str("%sitems/covers/%s.jpg" % (settings.MEDIA_ROOT, mongoid)))
+
+def item_background(request, mongoid, quality):
+    if request.method == "GET":
+        return getImage(str("%sitems/backgrounds/%s.jpg" % (settings.MEDIA_ROOT, mongoid)))
+
+def home_advert_image(request, mongoid, quality):
+    if request.method == "GET":
+        return getImage(str("%sad/home/%s.jpg" % (settings.MEDIA_ROOT, mongoid)))
 
 def item_file(request, mongoid, quality, page_number):
 
@@ -50,24 +59,3 @@ def item_file(request, mongoid, quality, page_number):
             return HttpResponse(item_file, content_type="application/pdf")
 
     return HttpResponse(status="400")
-
-
-
-def item_cover(request, mongoid, quality):
-    if request.method == "GET":
-        blob = Blob()
-        cover = str("%sitems/covers/%s.jpg" % (settings.MEDIA_ROOT, mongoid))
-        pgthumb = wandimage(filename=cover)
-        pgthumb.transform(resize = QUALITY.get(quality))
-        value = pgthumb.make_blob(format='jpeg')
-        return HttpResponse(value, mimetype="image/jpeg")
-
-
-def item_background(request, mongoid, quality):
-    if request.method == "GET":
-        blob = Blob()
-        cover = str("%sitems/backgrounds/%s.jpg" % (settings.MEDIA_ROOT, mongoid))
-        pgthumb = wandimage(filename=cover)
-        pgthumb.transform(resize = QUALITY.get(quality))
-        value = pgthumb.make_blob(format='jpeg')
-        return HttpResponse(value, mimetype="image/jpeg")
