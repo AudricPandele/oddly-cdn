@@ -48,8 +48,8 @@ class ArtistHandlingResource(DjangoResource):
         uploadImage(
             file = self.data.get("file"),
             relativePath = str("artist/covers/%s" % (self.data.get("_id"))),
-            absolutePath = "%sartist/covers/%s" %  (settings.MEDIA_ROOT, self.data.get("_id"))),
-            extensionPath = "%sartist/covers/%s.jpg" %  (settings.MEDIA_ROOT, self.data.get("_id")))
+            absolutePath = str("%sartist/covers/%s" %  (settings.MEDIA_ROOT, self.data.get("_id"))),
+            extensionPath = str("%sartist/covers/%s.jpg" %  (settings.MEDIA_ROOT, self.data.get("_id")))
             )
 
 
@@ -58,8 +58,8 @@ class ArtistHandlingResource(DjangoResource):
         uploadImage(
             file = self.data.get("file"),
             relativePath = str("artist/thumbs/%s" % (self.data.get("_id"))),
-            absolutePath = "%sartist/thumbs/%s" %  (settings.MEDIA_ROOT, self.data.get("_id"))),
-            extensionPath = "%sartist/thumbs/%s.jpg" %  (settings.MEDIA_ROOT, self.data.get("_id")))
+            absolutePath = str("%sartist/thumbs/%s" %  (settings.MEDIA_ROOT, self.data.get("_id"))),
+            extensionPath = str("%sartist/thumbs/%s.jpg" %  (settings.MEDIA_ROOT, self.data.get("_id")))
             )
 
 
