@@ -1,5 +1,8 @@
+[1.0.2]
+- Fix typo (extention instead of extension)
+
 [1.0.1]
-- Fix 500 when uploading photo (missing function issue in endpoint)
+- Fix 500 when uploading photo (missing function "deserialize" in endpoint)
 	
 [1.0.0]
 - Initial release after development
