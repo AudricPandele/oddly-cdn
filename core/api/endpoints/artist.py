@@ -38,10 +38,8 @@ class ArtistHandlingResource(DjangoResource):
             'coverupload': { 'POST': 'coverupload' }
             })
 
-
     def is_authenticated(self):
         return True
-
 
     @skip_prepare
     def coverupload(self):
@@ -52,9 +50,9 @@ class ArtistHandlingResource(DjangoResource):
             extensionPath = str("%sartist/covers/%s.jpg" %  (settings.MEDIA_ROOT, self.data.get("_id")))
             )
 
-
     @skip_prepare
     def thumbupload(self):
+        
         uploadImage(
             file = self.data.get("file"),
             relativePath = str("artist/thumbs/%s" % (self.data.get("_id"))),
@@ -62,6 +60,23 @@ class ArtistHandlingResource(DjangoResource):
             extensionPath = str("%sartist/thumbs/%s.jpg" %  (settings.MEDIA_ROOT, self.data.get("_id")))
             )
 
+    def deserialize(self, method, endpoint, body):
+        format = None
+        """
+        Changes request stat in to python objects
+        """
+        if not format:
+            format = self.request.META.get('CONTENT_TYPE', 'application/json')
+            
+        if format == 'application/x-www-form-urlencoded':
+            return self.request.POST
+        
+        if format.startswith('multipart'):
+            multipart_data = self.request.POST.copy()
+            multipart_data.update(self.request.FILES)
+            return multipart_data
+
+        return super(ArtistHandlingResource, self).deserialize(method, endpoint, format)
 
     @classmethod
     def urls(cls, name_prefix=None):
