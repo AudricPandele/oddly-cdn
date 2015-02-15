@@ -84,6 +84,23 @@ class ItemHandlingResource(DjangoResource):
             uploaded_file = "%s%s" % (settings.MEDIA_ROOT, upload_path)
             run_parser.delay(uploaded_file=uploaded_file, mongo_id=mongoid)
 
+    def deserialize(self, method, endpoint, body):
+        format = None
+        """
+        Changes request stat in to python objects
+        """
+        if not format:
+            format = self.request.META.get('CONTENT_TYPE', 'application/json')
+            
+        if format == 'application/x-www-form-urlencoded':
+            return self.request.POST
+        
+        if format.startswith('multipart'):
+            multipart_data = self.request.POST.copy()
+            multipart_data.update(self.request.FILES)
+            return multipart_data
+
+        return super(ArtistHandlingResource, self).deserialize(method, endpoint, format)
 
     @classmethod
     def urls(cls, name_prefix=None):
