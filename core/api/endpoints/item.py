@@ -60,7 +60,7 @@ class ItemHandlingResource(DjangoResource):
             file = self.data.get("file"),
             relativePath = str("items/backgrounds/%s" % (self.data.get("_id"))),
             absolutePath = str("%sitems/backgrounds/%s" % (settings.MEDIA_ROOT, self.data.get("_id"))),
-            extentionPath = str("%sitems/backgrounds/%s.jpg" % (settings.MEDIA_ROOT, self.data.get("_id"))),
+            extensionPath = str("%sitems/backgrounds/%s.jpg" % (settings.MEDIA_ROOT, self.data.get("_id"))),
             )
 
 
